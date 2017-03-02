@@ -1,0 +1,105 @@
+$ fab unleash_chaos --set duration=10,scenario_file=examples/example_scenario,inventory_file=examples/example_inventory,dry_run=true
+[2017-03-02 21:22:34.662205] Chaos tasks in scenario file:
+some-app-servers                    some-app-server-service         chaos-monkey    1-2                 3-5                     kill
+
+some-other-app-servers              some-other-app-server-service   chaos-monkey    3-4                 8-9                     stop
+
+some-other-app-servers              some-other-app-server-service   clog-monkey     5-6                 2-3                     300-600ms,100ms,2-7%
+
+some-db-servers                     some-db-server-service          chaos-monkey    1-3                 1-5                     stop
+
+[2017-03-02 21:22:34.700194] About to unleash chaos for at least 10 minutes
+[2017-03-02 21:22:34.706547 Task 0 some-app-servers] Executing group.
+[2017-03-02 21:22:34.706721] Getting some-app-servers from examples/example_inventory...
+[localhost] local: ansible some-app-servers -i examples/example_inventory --list-hosts
+[2017-03-02 21:22:34.706961 Task 1 some-other-app-servers] Executing group.
+[2017-03-02 21:22:34.707096] Getting some-other-app-servers from examples/example_inventory...
+[localhost] local: ansible some-other-app-servers -i examples/example_inventory --list-hosts
+[2017-03-02 21:22:34.707692 Task 2 some-other-app-servers] Executing group.
+[2017-03-02 21:22:34.707863] Getting some-other-app-servers from examples/example_inventory...
+[localhost] local: ansible some-other-app-servers -i examples/example_inventory --list-hosts
+[2017-03-02 21:22:34.709278 Task 3 some-db-servers] Executing group.
+[2017-03-02 21:22:34.709590] Getting some-db-servers from examples/example_inventory...
+[localhost] local: ansible some-db-servers -i examples/example_inventory --list-hosts
+[2017-03-02 21:22:35.594912 Task 0 some-app-servers] hosts: some-app-server-host1, some-app-server-host2
+[2017-03-02 21:22:35.594901 Task 3 some-db-servers] hosts: some-db-host1, some-db-host2
+[2017-03-02 21:22:35.595513 Task 1 some-other-app-servers] hosts: some-other-app-server-host1, some-other-app-server-host2, some-other-app-server-host3
+[2017-03-02 21:22:35.596576 Task 2 some-other-app-servers] hosts: some-other-app-server-host1, some-other-app-server-host2, some-other-app-server-host3
+[2017-03-02 21:22:35.596847 Task 3 some-db-servers] Taking a break for 1 minute(s), sleeping...
+[2017-03-02 21:22:35.597118 Task 0 some-app-servers] Taking a break for 3 minute(s), sleeping...
+[2017-03-02 21:22:35.597325 Task 1 some-other-app-servers] Taking a break for 8 minute(s), sleeping...
+[2017-03-02 21:22:35.597585 Task 2 some-other-app-servers] Taking a break for 3 minute(s), sleeping...
+[2017-03-02 21:22:36.597190 Task 3 some-db-servers] Task 3 is about to unleash Chaos monkey (stop) on host some-db-host1
+[2017-03-02 21:22:36.597489] Task 3, host some-db-host1
+[2017-03-02 21:22:36.597956 DRY RUN] sudo service some-db-server-service stop
+[2017-03-02 21:22:36.598128 CHAOS MONKEY some-db-host1] some-db-server-service stopped!
+[2017-03-02 21:22:36.598255 Task 3 some-db-servers] Taking a break for 2 minute(s), eating a banana...
+[2017-03-02 21:22:38.598534 Task 2 some-other-app-servers] Task 2 is about to unleash Clog monkey on host some-other-app-server-host3
+[2017-03-02 21:22:38.598545 Task 0 some-app-servers] Task 0 is about to unleash Chaos monkey (kill) on host some-app-server-host1
+[2017-03-02 21:22:38.598638] Task 3, host some-db-host1
+[2017-03-02 21:22:38.598918] Task 0, host some-app-server-host1
+[2017-03-02 21:22:38.599051 DRY RUN] sudo service some-db-server-service start
+[2017-03-02 21:22:38.599204 JANITOR MONKEY some-db-host1] some-db-server-service started up!
+[2017-03-02 21:22:38.599433 Task 3 some-db-servers] Taking a break for 4 minute(s), sleeping...
+[2017-03-02 21:22:38.599547 CHAOS MONKEY some-app-server-host1] Killing some-app-server-service with id dummy_pid...
+[2017-03-02 21:22:38.599615 DRY RUN] sudo kill -9 dummy_pid
+[2017-03-02 21:22:38.599638] Task 2, host some-other-app-server-host3
+[2017-03-02 21:22:38.599767 CHAOS MONKEY some-app-server-host1] some-app-server-service with pid dummy_pid killed!
+[2017-03-02 21:22:38.599892 Task 0 some-app-servers] Taking a break for 2 minute(s), eating a banana...
+[2017-03-02 21:22:38.600080 CLOG MONKEY some-other-app-server-host3] Clogging network...
+[2017-03-02 21:22:38.600170 DRY RUN] sudo tc qdisc add dev eth0 root netem delay 446ms 100ms loss 4%
+[2017-03-02 21:22:38.600294 CLOG MONKEY some-other-app-server-host3] Network clogged!
+[2017-03-02 21:22:38.600387 Task 2 some-other-app-servers] Taking a break for 5 minute(s), eating a banana...
+[2017-03-02 21:22:40.601230] Task 0, host some-app-server-host1
+[2017-03-02 21:22:40.601629 DRY RUN] sudo service some-app-server-service start
+[2017-03-02 21:22:40.601895 JANITOR MONKEY some-app-server-host1] some-app-server-service started up!
+[2017-03-02 21:22:40.602164 Task 0 some-app-servers] Taking a break for 4 minute(s), sleeping...
+[2017-03-02 21:22:42.600795 Task 3 some-db-servers] Task 3 is about to unleash Chaos monkey (stop) on host some-db-host1
+[2017-03-02 21:22:42.601091] Task 3, host some-db-host1
+[2017-03-02 21:22:42.601325 DRY RUN] sudo service some-db-server-service stop
+[2017-03-02 21:22:42.601481 CHAOS MONKEY some-db-host1] some-db-server-service stopped!
+[2017-03-02 21:22:42.601572 Task 3 some-db-servers] Taking a break for 1 minute(s), eating a banana...
+[2017-03-02 21:22:43.598554 Task 1 some-other-app-servers] Task 1 is about to unleash Chaos monkey (stop) on host some-other-app-server-host1
+[2017-03-02 21:22:43.598865] Task 1, host some-other-app-server-host1
+[2017-03-02 21:22:43.599306 DRY RUN] sudo service some-other-app-server-service stop
+[2017-03-02 21:22:43.599459 CHAOS MONKEY some-other-app-server-host1] some-other-app-server-service stopped!
+[2017-03-02 21:22:43.599561 Task 1 some-other-app-servers] Taking a break for 4 minute(s), eating a banana...
+[2017-03-02 21:22:43.601594] Task 2, host some-other-app-server-host3
+[2017-03-02 21:22:43.602066 JANITOR MONKEY cleans up after CLOG MONKEY some-other-app-server-host3] Unclogging network...
+[2017-03-02 21:22:43.602176 DRY RUN] sudo tc qdisc del dev eth0 root netem
+[2017-03-02 21:22:43.602315 CLOG MONKEY some-other-app-server-host3] Network unclogged!
+[2017-03-02 21:22:43.602451] Task 3, host some-db-host1
+[2017-03-02 21:22:43.602596 Task 2 some-other-app-servers] Taking a break for 2 minute(s), sleeping...
+[2017-03-02 21:22:43.602665 DRY RUN] sudo service some-db-server-service start
+[2017-03-02 21:22:43.602829 JANITOR MONKEY some-db-host1] some-db-server-service started up!
+[2017-03-02 21:22:43.603060 Task 3 some-db-servers] Taking a break for 1 minute(s), sleeping...
+[2017-03-02 21:22:44.603624 Task 3 some-db-servers] Task 3 is about to unleash Chaos monkey (stop) on host some-db-host1
+[2017-03-02 21:22:44.603613 Task 0 some-app-servers] Task 0 is about to unleash Chaos monkey (kill) on host some-app-server-host1
+[2017-03-02 21:22:44.603947] Task 3, host some-db-host1
+[2017-03-02 21:22:44.604006] Task 0, host some-app-server-host1
+[2017-03-02 21:22:44.604156 DRY RUN] sudo service some-db-server-service stop
+[2017-03-02 21:22:44.604327 CHAOS MONKEY some-db-host1] some-db-server-service stopped!
+[2017-03-02 21:22:44.604362 CHAOS MONKEY some-app-server-host1] Killing some-app-server-service with id dummy_pid...
+[2017-03-02 21:22:44.604425 Task 3 some-db-servers] Taking a break for 1 minute(s), eating a banana...
+[2017-03-02 21:22:44.604447 DRY RUN] sudo kill -9 dummy_pid
+[2017-03-02 21:22:44.604627 CHAOS MONKEY some-app-server-host1] some-app-server-service with pid dummy_pid killed!
+[2017-03-02 21:22:44.604737 Task 0 some-app-servers] Taking a break for 2 minute(s), eating a banana...
+[2017-03-02 21:22:44.721513] Terminating task 2
+[2017-03-02 21:22:45.605837] Task 3, host some-db-host1
+[2017-03-02 21:22:45.606192 DRY RUN] sudo service some-db-server-service start
+[2017-03-02 21:22:45.606439 JANITOR MONKEY some-db-host1] some-db-server-service started up!
+[2017-03-02 21:22:45.606794 Task 3 some-db-servers] Taking a break for 3 minute(s), sleeping...
+[2017-03-02 21:22:45.723168] Terminating task 3
+[2017-03-02 21:22:46.606100] Task 0, host some-app-server-host1
+[2017-03-02 21:22:46.606457 DRY RUN] sudo service some-app-server-service start
+[2017-03-02 21:22:46.606681 JANITOR MONKEY some-app-server-host1] some-app-server-service started up!
+[2017-03-02 21:22:46.606957 Task 0 some-app-servers] Taking a break for 3 minute(s), sleeping...
+[2017-03-02 21:22:46.728167] Terminating task 0
+[2017-03-02 21:22:47.600647] Task 1, host some-other-app-server-host1
+[2017-03-02 21:22:47.601063 DRY RUN] sudo service some-other-app-server-service start
+[2017-03-02 21:22:47.601277 JANITOR MONKEY some-other-app-server-host1] some-other-app-server-service started up!
+[2017-03-02 21:22:47.601579 Task 1 some-other-app-servers] Taking a break for 8 minute(s), sleeping...
+[2017-03-02 21:22:47.730640] Terminating task 1
+[2017-03-02 21:22:47.730793] Done, no more chaos for now!
+
+Done.

@@ -1,0 +1,12 @@
+[some-app-servers]
+some-app-server-host1
+some-app-server-host2
+
+[some-other-app-servers]
+some-other-app-server-host1
+some-other-app-server-host2
+some-other-app-server-host3
+
+[some-db-servers]
+some-db-host1
+some-db-host2
