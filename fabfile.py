@@ -236,6 +236,7 @@ def kill_service(task_number, current_host_per_task, service_name, dry_run):
 def stop_service(task_number, current_host_per_task, service_name, dry_run):
     log_message("Task %i, host %s" % (task_number, current_host_per_task[task_number]))
     with settings(host_string=current_host_per_task[task_number], warn_only=True):
+        log_action("CHAOS MONKEY", current_host_per_task[task_number], "Stopping servie %s..." % service_name)
         execute_sudo_command("service %s stop" % service_name, dry_run)
         log_action("CHAOS MONKEY", current_host_per_task[task_number], "%s stopped!" % service_name)
 
